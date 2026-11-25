@@ -10,6 +10,8 @@ contiene tutta la logica e si può testare, e in un **eseguibile** sottile
 build.rs                 solo per Windows: crea l'icona .ico e la mette nell'eseguibile (windres di MinGW)
 examples/icona_store.rs  icona 512 × 512 per la scheda del Play Store (PNG scritto senza librerie)
 script/genera-licenze.ps1  raccoglie i testi delle licenze in assets/licenze/licenze.txt (Informazioni → Licenze)
+script/immagine-store.ps1  immagine in evidenza 1024 × 500 per il Play Store (dist/play-store)
+docs/schermate/          schermate del README e note-esempio.json (le note usate per le schermate: Importa backup)
 .github/workflows/       verifica.yml (test su Windows/Linux/macOS), rilascio.yml (bozza di Release da un'etichetta v…)
 docs/PUBBLICARE.md       cosa e' pronto e cosa resta per GitHub e Play Store; docs/PRIVACY.md informativa
 

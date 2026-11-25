@@ -22,6 +22,12 @@ affiliated with Anthropic. Tested on Windows and Android; the Linux and
 macOS versions build but have not been tested. Interface in Italian and
 English; documentation in Italian.*
 
+<p align="center">
+  <img src="docs/schermate/computer.png" alt="Schedario sul computer: la nota Spesa con la lista da spuntare, le schede in alto e il menu a destra" width="70%">
+  &nbsp;
+  <img src="docs/schermate/telefono.png" alt="Schedario sul telefono: la panoramica delle note come schede colorate" width="24%">
+</p>
+
 ## Cosa fa
 
 - **Schede**, come le linguette di un raccoglitore, con ricerca nel titolo e

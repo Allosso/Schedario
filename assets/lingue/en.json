@@ -325,5 +325,6 @@
   "backup_automatico_attivato": "Automatic backup turned on: the file updates itself after every change.",
   "invito_backup_titolo": "Keep a copy of the notes",
   "invito_backup_testo": "Notes are saved only on this phone and are deleted if the app is uninstalled.\n\nTo keep a copy, turn on the automatic backup to a chosen file, for example in Download or Google Drive, or sync with a computer (Settings → Local network). Both can also be turned on later, from Settings.",
-  "piu_tardi": "Later"
+  "piu_tardi": "Later",
+  "conferma_svuota@telefono": "All the notes in the trash ({n}) will be deleted permanently, on the connected devices too. After confirming, CANCEL stays available for 10 seconds."
 }

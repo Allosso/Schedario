@@ -106,6 +106,12 @@ jobs:
           path: file
           merge-multiple: true
 
+      # Codici di controllo: chi scarica puo' verificare che il file sia
+      # proprio questo (Windows: Get-FileHash <file>; Linux/macOS: sha256sum -c).
+      - name: Codici SHA-256
+        working-directory: file
+        run: sha256sum Schedario-* > SHA256SUMS.txt && cat SHA256SUMS.txt
+
       - name: Crea la bozza con i file allegati
         env:
           GH_TOKEN: ${{ github.token }}

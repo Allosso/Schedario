@@ -325,5 +325,6 @@
   "backup_automatico_attivato": "Backup automatico attivato: il file si aggiorna da solo dopo ogni modifica.",
   "invito_backup_titolo": "Conservare una copia delle note",
   "invito_backup_testo": "Le note sono salvate solo in questo telefono e vengono cancellate se si disinstalla l’app.\n\nPer conservarne una copia si può attivare il backup automatico in un file scelto, per esempio in Download o in Google Drive, oppure la sincronizzazione con un computer (Impostazioni → Rete locale). Entrambi si possono attivare anche più tardi, dalle Impostazioni.",
-  "piu_tardi": "Più tardi"
+  "piu_tardi": "Più tardi",
+  "conferma_svuota@telefono": "Tutte le note nel cestino ({n}) saranno eliminate definitivamente, anche dagli altri dispositivi collegati. Dopo la conferma resta ANNULLA per 10 secondi."
 }

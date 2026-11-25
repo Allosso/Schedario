@@ -2,11 +2,15 @@
 //! disegno dell'app (src/interfaccia/icona_forme.rs).
 //!
 //!   cargo run --example icona_store -- dist\play-store\icona-512.png
+//!   cargo run --example icona_store -- icona.png --angoli   (angoli trasparenti)
 //!
 //! Il PNG e' scritto senza librerie: i dati sono in blocchi "non compressi"
-//! di zlib, quindi il file e' grande (circa 1 MB) ma valido; il Play Store
-//! accetta fino a 1 MB, percio' i pixel sono salvati senza canale alfa
-//! (l'icona del Play Store non ha trasparenze) e il file resta sotto il limite.
+//! di zlib, quindi il file e' grande ma valido. Il Play Store accetta fino a
+//! 1 MB, percio' la sua icona e' salvata senza canale alfa (non ha
+//! trasparenze: gli angoli li arrotonda lo Store) e resta sotto il limite.
+//! Con `--angoli` si ottiene invece l'icona dell'app con gli angoli
+//! trasparenti (canale alfa), per esempio per comporre altre immagini
+//! (`script/immagine-store.ps1`).
 
 use std::path::PathBuf;
 
@@ -14,14 +18,20 @@ const LATO: u32 = 512;
 
 fn main() {
     let destinazione = std::env::args_os().nth(1).map(PathBuf::from).unwrap_or_else(|| PathBuf::from("icona-512.png"));
-    let rgba = schedario::interfaccia::icona_forme::disegna_a_tutto_campo(LATO);
+    let angoli = std::env::args().any(|a| a == "--angoli");
+    let rgba = if angoli {
+        schedario::interfaccia::icona_forme::disegna(LATO)
+    } else {
+        schedario::interfaccia::icona_forme::disegna_a_tutto_campo(LATO)
+    };
+    let canali = if angoli { 4 } else { 3 };
 
-    // Righe del PNG: un byte di filtro (0, nessuno) e poi i pixel RGB.
-    let mut grezzo = Vec::with_capacity(((LATO * 3 + 1) * LATO) as usize);
+    // Righe del PNG: un byte di filtro (0, nessuno) e poi i pixel RGB(A).
+    let mut grezzo = Vec::with_capacity(((LATO * canali + 1) * LATO) as usize);
     for riga in rgba.chunks((LATO * 4) as usize) {
         grezzo.push(0);
         for pixel in riga.chunks(4) {
-            grezzo.extend_from_slice(&pixel[..3]);
+            grezzo.extend_from_slice(&pixel[..canali as usize]);
         }
     }
 
@@ -29,8 +39,8 @@ fn main() {
     let mut intestazione = Vec::new();
     intestazione.extend_from_slice(&LATO.to_be_bytes());
     intestazione.extend_from_slice(&LATO.to_be_bytes());
-    // 8 bit per canale, colore RGB, compressione/filtro/interlacciamento standard.
-    intestazione.extend_from_slice(&[8, 2, 0, 0, 0]);
+    // 8 bit per canale, colore RGB (2) o RGBA (6), resto standard.
+    intestazione.extend_from_slice(&[8, if angoli { 6 } else { 2 }, 0, 0, 0]);
     blocco(&mut png, b"IHDR", &intestazione);
     blocco(&mut png, b"IDAT", &zlib_senza_compressione(&grezzo));
     blocco(&mut png, b"IEND", &[]);

@@ -88,9 +88,15 @@ Play Console prima di pubblicare).
 3. ☐ Test chiuso: almeno **12 tester** iscritti per **14 giorni** di fila
    (account personali creati dopo il 13/11/2023), poi richiesta di accesso alla
    produzione.
-4. ☐ Immagini: icona `dist\play-store\icona-512.png` (pronta, si rigenera con
-   `cargo run --release --example icona_store -- dist\play-store\icona-512.png`),
-   immagine in evidenza 1024 × 500, almeno 2 schermate del telefono.
+4. ☑ Immagini, tutte in `dist\play-store\` (fuori dal repository):
+   - icona `icona-512.png`, si rigenera con
+     `cargo run --release --example icona_store -- dist\play-store\icona-512.png`;
+   - immagine in evidenza `immagine-in-evidenza.png` (1024 × 500), si rigenera
+     con `script\immagine-store.ps1`;
+   - 6 schermate del telefono in `schermate\` (1080 × 2080, senza barra di
+     stato e di navigazione: il Play Store vuole il lato lungo al massimo il
+     doppio di quello corto), fatte con le note di esempio. Le schermate del
+     README sono in `docs/schermate/`.
 5. ☐ Scheda dello Store: testi proposti qui sotto, da rivedere.
 6. ☐ Moduli: risposte proposte qui sotto, da confermare con le domande
    effettive della Play Console.

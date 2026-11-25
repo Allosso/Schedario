@@ -1,0 +1,36 @@
+{
+  "formato": "schedario",
+  "versione": 1,
+  "note": [
+    {
+      "titolo": "Spesa",
+      "testo": "[ ] Latte\n[x] Pane\n[ ] Uova\n[ ] Pomodori\n[x] Caffè\n[ ] Detersivo per i piatti\n[ ] Basilico",
+      "colore": "giallo"
+    },
+    {
+      "titolo": "Viaggio a Lisbona",
+      "testo": "Partenza venerdì 14 alle 7:40, rientro lunedì sera.\n\nDa vedere:\n[x] Prenotare il museo degli azulejos\n[ ] Torre di Belém\n[ ] Alfama e il tram 28\n[ ] Tramonto al Miradouro da Senhora do Monte\n\nNella valigia: ombrello piccolo, scarpe comode, caricabatterie.",
+      "colore": "azzurro"
+    },
+    {
+      "titolo": "Riunione di lunedì",
+      "testo": "Punti da discutere:\n- calendario di dicembre\n- nuovo fornitore per la carta\n- turni per le ferie\n\nPortare i preventivi stampati e chiedere a Giulia le date del corso.",
+      "colore": "arancio"
+    },
+    {
+      "titolo": "Libri da leggere",
+      "testo": "[x] Il barone rampante\n[ ] Le città invisibili\n[ ] Lessico famigliare\n[ ] Il giardino dei Finzi-Contini\n[ ] La luna e i falò",
+      "colore": "verde"
+    },
+    {
+      "titolo": "Pasta al pesto",
+      "testo": "Per 4 persone:\n- 50 g di basilico\n- 30 g di pinoli\n- 60 g di parmigiano\n- 1 spicchio d'aglio\n- olio extravergine\n\nPestare basilico e aglio con un pizzico di sale, poi pinoli e formaggio; unire l'olio a filo. Condire la pasta con un cucchiaio di acqua di cottura.",
+      "colore": "viola"
+    },
+    {
+      "titolo": "Idee per il balcone",
+      "testo": "Vasi più grandi per i pomodori, una fioriera per le erbe aromatiche (rosmarino, salvia, timo) e un piccolo tavolo pieghevole.\n\nChiedere al vivaio quando arrivano le piantine di lavanda.",
+      "colore": ""
+    }
+  ]
+}
