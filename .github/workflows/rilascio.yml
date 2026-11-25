@@ -114,4 +114,4 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --draft \
             --title "Schedario $GITHUB_REF_NAME" \
-            --notes "Bozza creata automaticamente: controllare i file e scrivere le novita' prima di pubblicare."
+            --notes "Bozza creata automaticamente: controllare i file e scrivere le novita' prima di pubblicare. Le versioni per Linux e macOS non sono state provate."

@@ -9,9 +9,13 @@ Note con schede per Windows, Linux, macOS e Android, sincronizzate e cifrate
 tra i dispositivi della stessa rete locale. Nessun account, nessun cloud,
 nessun abbonamento. Scritto in Rust con egui.
 
+**Provato su Windows e Android.** Le versioni per Linux e macOS si compilano,
+ma non sono state provate.
+
 *English: a tabbed notes app for Windows, Linux, macOS and Android, with
 encrypted sync between devices on the same local network. No account, no
-cloud. Built with Claude Code. Interface in Italian and
+cloud. Built with Claude Code. Tested on Windows and Android; the Linux and
+macOS versions build but have not been tested. Interface in Italian and
 English; documentation in Italian.*
 
 ## Cosa fa
