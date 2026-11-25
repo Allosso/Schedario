@@ -1,0 +1,46 @@
+# Compila e prova Schedario su Windows, Linux e macOS a ogni invio al
+# repository e a ogni richiesta di modifica (pull request).
+# Usa solo strumenti gia' presenti sulle macchine di GitHub: nessuna azione di
+# terzi oltre a actions/checkout (di GitHub, licenza MIT).
+name: Verifica
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.sistema }})
+    strategy:
+      fail-fast: false
+      matrix:
+        sistema: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.sistema }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Windows: toolchain GNU + MinGW-w64, come sul PC di sviluppo (niente
+      # strumenti Microsoft con licenza da accettare). windres serve a build.rs
+      # per mettere l'icona nell'eseguibile.
+      - name: Rust GNU e MinGW (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          C:\msys64\usr\bin\pacman.exe -S --noconfirm --needed mingw-w64-x86_64-gcc mingw-w64-x86_64-binutils
+          "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal
+          rustup default stable-x86_64-pc-windows-gnu
+
+      - name: Rust (Linux e macOS)
+        if: runner.os != 'Windows'
+        run: rustup toolchain install stable --profile minimal && rustup default stable
+
+      - name: Test
+        run: cargo test --locked
+
+      - name: Compilazione ottimizzata
+        run: cargo build --release --locked

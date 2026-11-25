@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Primo piano dell'icona adattiva: lo schedario aperto, le stesse forme di
+     src/interfaccia/icona.rs (griglia 64 x 64, ingrandita di 1,05 e centrata
+     nei 108 dp dell'icona). Se si cambia il disegno la', aggiornare anche qui.
+     Il fondo blu e' in values/colori.xml; il telefono lo ritaglia nella sua
+     forma (cerchio, quadrato arrotondato...). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="1.05"
+        android:scaleY="1.05"
+        android:translateX="20.4"
+        android:translateY="20.4">
+        <!-- Scheda in fondo: linguetta -->
+        <path android:fillColor="#B9CFD5" android:pathData="M39,9 H46 A2,2 0 0 1 48,11 V14 A2,2 0 0 1 46,16 H39 A2,2 0 0 1 37,14 V11 A2,2 0 0 1 39,9 Z" />
+        <!-- Scheda in fondo -->
+        <path android:fillColor="#B9CFD5" android:pathData="M17,13 H47 A3,3 0 0 1 50,16 V40 A3,3 0 0 1 47,43 H17 A3,3 0 0 1 14,40 V16 A3,3 0 0 1 17,13 Z" />
+        <!-- Scheda in mezzo: linguetta -->
+        <path android:fillColor="#E4ECEE" android:pathData="M27,13 H34 A2,2 0 0 1 36,15 V18 A2,2 0 0 1 34,20 H27 A2,2 0 0 1 25,18 V15 A2,2 0 0 1 27,13 Z" />
+        <!-- Scheda in mezzo -->
+        <path android:fillColor="#E4ECEE" android:pathData="M17,17 H47 A3,3 0 0 1 50,20 V40 A3,3 0 0 1 47,43 H17 A3,3 0 0 1 14,40 V20 A3,3 0 0 1 17,17 Z" />
+        <!-- Scheda davanti: linguetta arancione -->
+        <path android:fillColor="#E08A3C" android:pathData="M16,17 H23 A2,2 0 0 1 25,19 V22 A2,2 0 0 1 23,24 H16 A2,2 0 0 1 14,22 V19 A2,2 0 0 1 16,17 Z" />
+        <!-- Scheda davanti -->
+        <path android:fillColor="#FAF8F4" android:pathData="M17,21 H47 A3,3 0 0 1 50,24 V44 A3,3 0 0 1 47,47 H17 A3,3 0 0 1 14,44 V24 A3,3 0 0 1 17,21 Z" />
+        <!-- Righe -->
+        <path android:fillColor="#2F6B7E" android:pathData="M20.25,26.5 H43.75 A1.25,1.25 0 0 1 45,27.75 V27.75 A1.25,1.25 0 0 1 43.75,29 H20.25 A1.25,1.25 0 0 1 19,27.75 V27.75 A1.25,1.25 0 0 1 20.25,26.5 Z" />
+        <path android:fillColor="#2F6B7E" android:pathData="M20.25,31.5 H43.75 A1.25,1.25 0 0 1 45,32.75 V32.75 A1.25,1.25 0 0 1 43.75,34 H20.25 A1.25,1.25 0 0 1 19,32.75 V32.75 A1.25,1.25 0 0 1 20.25,31.5 Z" />
+        <path android:fillColor="#2F6B7E" android:pathData="M20.25,36.5 H35.75 A1.25,1.25 0 0 1 37,37.75 V37.75 A1.25,1.25 0 0 1 35.75,39 H20.25 A1.25,1.25 0 0 1 19,37.75 V37.75 A1.25,1.25 0 0 1 20.25,36.5 Z" />
+        <!-- Cassetto -->
+        <path android:fillColor="#24525F" android:pathData="M13,41 H51 A4,4 0 0 1 55,45 V51 A4,4 0 0 1 51,55 H13 A4,4 0 0 1 9,51 V45 A4,4 0 0 1 13,41 Z" />
+        <!-- Maniglia -->
+        <path android:fillColor="#FAF8F4" android:pathData="M27.25,46 H36.75 A2.25,2.25 0 0 1 39,48.25 V48.25 A2.25,2.25 0 0 1 36.75,50.5 H27.25 A2.25,2.25 0 0 1 25,48.25 V48.25 A2.25,2.25 0 0 1 27.25,46 Z" />
+    </group>
+</vector>

@@ -1,0 +1,18 @@
+// Progetto Gradle che impacchetta il prototipo: la libreria Rust già
+// compilata (app/src/main/jniLibs) più la classe Java GameActivity di Google.
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "schedario"
+include ':app'

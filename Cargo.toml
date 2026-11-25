@@ -1,0 +1,97 @@
+[package]
+name = "schedario"
+version = "1.0.0"
+edition = "2024"
+description = "Note desktop con schede, widget fluttuanti e sincronizzazione in rete locale"
+license = "MIT"
+repository = "https://github.com/Allosso/schedario"
+publish = false
+
+# Il programma e' diviso in una libreria (tutta la logica, testabile)
+# e in un eseguibile sottile che si limita ad avviarla.
+[lib]
+name = "schedario"
+path = "src/lib.rs"
+
+[[bin]]
+name = "schedario"
+path = "src/main.rs"
+
+[dependencies]
+# Interfaccia grafica (MIT OR Apache-2.0). Backend OpenGL "glow": leggero e
+# disponibile su Windows, Linux (X11 e Wayland), macOS e Android. Le
+# funzioni in piu' di ciascun sistema sono nelle sezioni [target...] sotto.
+eframe = { version = "0.37.0", default-features = false, features = ["glow", "default_fonts"] }
+egui = { version = "0.37.0", default-features = false }
+# Serializzazione JSON di indice, preferenze, backup e protocollo di rete.
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+# Identificativi univoci delle note e dei dispositivi.
+uuid = { version = "1.29.3", features = ["v4"] }
+# Cifratura del traffico in rete locale (Apache-2.0 OR MIT).
+chacha20poly1305 = "0.11.0"
+sha2 = "0.11.1"
+getrandom = "0.4.3"
+# Derivazione lenta della chiave dal codice di gruppo (MIT OR Apache-2.0).
+argon2 = "0.6.0"
+# Socket UDP con riuso dell'indirizzo, per la scoperta automatica.
+socket2 = "0.6.5"
+# Date nell'ora locale: legge il fuso orario dal sistema, ora legale compresa
+# (MIT OR Apache-2.0).
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
+
+# Solo sui computer (Windows, Linux, macOS).
+[target.'cfg(not(target_os = "android"))'.dependencies]
+eframe = { version = "0.37.0", default-features = false, features = [
+    "accesskit",
+    "clipboard",
+    "links",
+    "wayland",
+    "x11",
+] }
+# Finestre di dialogo native per cartelle e file (MIT).
+rfd = "0.18.0"
+# Scorciatoia da tastiera globale per la nota rapida (Apache-2.0 OR MIT).
+# Windows, macOS e Linux con X11; su Wayland i tasti globali non esistono.
+global-hotkey = "0.10.0"
+
+# Solo su Android: GameActivity (vedi android/LEGGIMI.md). winit e jni sono
+# le stesse versioni usate da eframe e android-activity (Apache-2.0 / MIT).
+[target.'cfg(target_os = "android")'.dependencies]
+eframe = { version = "0.37.0", default-features = false, features = ["android-game-activity"] }
+winit = { version = "0.30.13", default-features = false, features = ["android-game-activity"] }
+jni = "0.22.4"
+log = "0.4"
+android_logger = "0.15"
+
+# Icona nell'area di notifica: su Windows e macOS tray-icon (MIT OR Apache-2.0)...
+[target.'cfg(any(target_os = "windows", target_os = "macos"))'.dependencies]
+tray-icon = { version = "0.26.1", default-features = false }
+
+# ...su Linux ksni (Unlicense): protocollo StatusNotifierItem via D-Bus,
+# Rust puro, senza GTK (funziona su KDE, Ubuntu e GNOME con AppIndicator).
+[target.'cfg(target_os = "linux")'.dependencies]
+ksni = { version = "0.3.7", default-features = false, features = ["blocking", "async-io"] }
+
+# La versione per Android e' un pacchetto a parte nella stessa cartella: una
+# libreria sottile che avvia questa. Condividono Cargo.lock e target/.
+[workspace]
+members = [".", "android"]
+
+# android-activity 0.6.1 (MIT OR Apache-2.0) con due correzioni locali, vedi
+# android/vendor/android-activity e android/LEGGIMI.md.
+[patch.crates-io]
+android-activity = { path = "android/vendor/android-activity" }
+
+[profile.dev.package.argon2]
+# Argon2 e' volutamente lento: anche in sviluppo lo compiliamo ottimizzato.
+opt-level = 3
+
+[profile.dev.package.blake2]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 4
+strip = true

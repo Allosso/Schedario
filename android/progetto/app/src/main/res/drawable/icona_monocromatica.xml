@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Variante a un solo colore dell'icona (icone a tema, Android 13 e
+     successivi): il telefono tinge tutto con il suo colore e conta solo la
+     trasparenza. Le tre schede si distinguono per trasparenza; le righe e la
+     maniglia sono fori; tra scheda davanti e cassetto c'e' uno spazio vuoto.
+     Stesse forme di src/interfaccia/icona_forme.rs, con le schede accorciate
+     dietro quella davanti (cosi' i fori restano vuoti) e le righe alzate di 1. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="1.05"
+        android:scaleY="1.05"
+        android:translateX="20.4"
+        android:translateY="20.4">
+        <!-- Scheda in fondo, con la linguetta -->
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.45" android:fillType="evenOdd" android:pathData="M39,9 H46 A2,2 0 0 1 48,11 V14 A2,2 0 0 1 46,16 H39 A2,2 0 0 1 37,14 V11 A2,2 0 0 1 39,9 Z M17,13 H47 A3,3 0 0 1 50,16 V21 A3,3 0 0 1 47,24 H17 A3,3 0 0 1 14,21 V16 A3,3 0 0 1 17,13 Z" />
+        <!-- Scheda in mezzo, con la linguetta -->
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.7" android:fillType="evenOdd" android:pathData="M27,13 H34 A2,2 0 0 1 36,15 V18 A2,2 0 0 1 34,20 H27 A2,2 0 0 1 25,18 V15 A2,2 0 0 1 27,13 Z M17,17 H47 A3,3 0 0 1 50,20 V21 A3,3 0 0 1 47,24 H17 A3,3 0 0 1 14,21 V20 A3,3 0 0 1 17,17 Z" />
+        <!-- Linguetta della scheda davanti -->
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="1" android:fillType="evenOdd" android:pathData="M16,17 H23 A2,2 0 0 1 25,19 V22 A2,2 0 0 1 23,24 H16 A2,2 0 0 1 14,22 V19 A2,2 0 0 1 16,17 Z" />
+        <!-- Scheda davanti: le righe sono fori -->
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="1" android:fillType="evenOdd" android:pathData="M17,21 H47 A3,3 0 0 1 50,24 V36.5 A3,3 0 0 1 47,39.5 H17 A3,3 0 0 1 14,36.5 V24 A3,3 0 0 1 17,21 Z M20.25,25.5 H43.75 A1.25,1.25 0 0 1 45,26.75 V26.75 A1.25,1.25 0 0 1 43.75,28 H20.25 A1.25,1.25 0 0 1 19,26.75 V26.75 A1.25,1.25 0 0 1 20.25,25.5 Z M20.25,30.5 H43.75 A1.25,1.25 0 0 1 45,31.75 V31.75 A1.25,1.25 0 0 1 43.75,33 H20.25 A1.25,1.25 0 0 1 19,31.75 V31.75 A1.25,1.25 0 0 1 20.25,30.5 Z M20.25,35.5 H35.75 A1.25,1.25 0 0 1 37,36.75 V36.75 A1.25,1.25 0 0 1 35.75,38 H20.25 A1.25,1.25 0 0 1 19,36.75 V36.75 A1.25,1.25 0 0 1 20.25,35.5 Z" />
+        <!-- Cassetto: la maniglia e' un foro -->
+        <path android:fillColor="#FFFFFFFF" android:fillAlpha="1" android:fillType="evenOdd" android:pathData="M13,41 H51 A4,4 0 0 1 55,45 V51 A4,4 0 0 1 51,55 H13 A4,4 0 0 1 9,51 V45 A4,4 0 0 1 13,41 Z M27.25,46 H36.75 A2.25,2.25 0 0 1 39,48.25 V48.25 A2.25,2.25 0 0 1 36.75,50.5 H27.25 A2.25,2.25 0 0 1 25,48.25 V48.25 A2.25,2.25 0 0 1 27.25,46 Z" />
+    </group>
+</vector>

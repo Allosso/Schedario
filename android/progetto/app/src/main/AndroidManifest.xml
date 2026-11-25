@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Rete locale: sincronizzazione con i computer e annunci UDP. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <!-- Vibrazione breve sulla pressione lunga (concesso all'installazione). -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/icona"
+        android:roundIcon="@mipmap/icona"
+        android:enableOnBackInvokedCallback="true"
+        android:hasCode="true"
+        android:allowBackup="false"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        <!-- singleTask: "Nuova nota" dall'icona torna all'app gia' aperta.
+             La tastiera che compare o sparisce non deve far ripartire l'app.
+             Solo in verticale: in orizzontale la tastiera lascia troppo poco
+             spazio per scrivere (scelta dell'utente, 22/11/2026). -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|uiMode"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait">
+            <!-- Nome della libreria Rust: libschedario_android.so -->
+            <meta-data android:name="android.app.lib_name" android:value="schedario_android" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

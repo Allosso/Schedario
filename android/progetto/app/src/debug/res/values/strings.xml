@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo per la versione di sviluppo: si distingue da quella pubblicata. -->
+<resources>
+    <string name="app_name">Schedario (sviluppo)</string>
+</resources>

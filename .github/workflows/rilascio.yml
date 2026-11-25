@@ -1,0 +1,117 @@
+# Prepara una nuova versione da scaricare. Parte quando si crea un'etichetta
+# (tag) come v1.0.0: compila Schedario per Windows, Linux e macOS e crea una
+# "Release" di GitHub in BOZZA con i file allegati. La bozza non e' visibile
+# a nessuno finche' non la si controlla e pubblica a mano dalla pagina
+# Releases del repository; li' si puo' aggiungere anche l'APK per Android,
+# compilato sul PC con android\compila.ps1 -Pubblicazione (serve la chiave
+# di firma, che non deve mai stare su GitHub).
+#
+# L'etichetta deve corrispondere alla versione in Cargo.toml (v1.0.0 = 1.0.0).
+name: Rilascio
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  compila:
+    name: Compila (${{ matrix.nome }})
+    strategy:
+      matrix:
+        include:
+          - sistema: windows-latest
+            nome: windows-x64
+          - sistema: ubuntu-latest
+            nome: linux-x64
+          - sistema: macos-latest
+            nome: macos-arm64
+    runs-on: ${{ matrix.sistema }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Etichetta e Cargo.toml dicono la stessa versione
+        shell: bash
+        run: |
+          versione=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n 1)
+          if [ "v$versione" != "$GITHUB_REF_NAME" ]; then
+            echo "L'etichetta $GITHUB_REF_NAME non corrisponde alla versione $versione di Cargo.toml"
+            exit 1
+          fi
+
+      - name: Rust GNU e MinGW (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          C:\msys64\usr\bin\pacman.exe -S --noconfirm --needed mingw-w64-x86_64-gcc mingw-w64-x86_64-binutils
+          "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+          rustup toolchain install stable-x86_64-pc-windows-gnu --profile minimal
+          rustup default stable-x86_64-pc-windows-gnu
+
+      - name: Rust (Linux e macOS)
+        if: runner.os != 'Windows'
+        run: rustup toolchain install stable --profile minimal && rustup default stable
+
+      - name: Test e compilazione (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cargo test --locked
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          cargo build --release --locked
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $cartella = "Schedario-$env:GITHUB_REF_NAME-${{ matrix.nome }}"
+          New-Item -ItemType Directory $cartella | Out-Null
+          Copy-Item target\release\schedario.exe "$cartella\Schedario.exe"
+          Copy-Item LICENSE "$cartella\LICENSE.txt"
+          Copy-Item assets\licenze\licenze.txt "$cartella\LICENZE.txt"
+          Compress-Archive -Path $cartella -DestinationPath "$cartella.zip"
+
+      - name: Test e compilazione (Linux e macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          sh script/compila-linux-macos.sh
+          cartella="Schedario-$GITHUB_REF_NAME-${{ matrix.nome }}"
+          mkdir "$cartella"
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            cp -R dist/Schedario.app "$cartella/"
+          else
+            cp dist/schedario "$cartella/"
+          fi
+          cp dist/LICENSE.txt dist/LICENZE.txt "$cartella/"
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            zip -r -y "$cartella.zip" "$cartella"
+          else
+            tar -czf "$cartella.tar.gz" "$cartella"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.nome }}
+          path: |
+            Schedario-*.zip
+            Schedario-*.tar.gz
+          if-no-files-found: error
+
+  bozza:
+    name: Bozza della Release
+    needs: compila
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: file
+          merge-multiple: true
+
+      - name: Crea la bozza con i file allegati
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" file/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --draft \
+            --title "Schedario $GITHUB_REF_NAME" \
+            --notes "Bozza creata automaticamente: controllare i file e scrivere le novita' prima di pubblicare."

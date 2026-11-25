@@ -1,0 +1,24 @@
+# Compilati di Rust e versioni pronte da distribuire (si allegano alle
+# "Release" di GitHub, non si mettono nel repository).
+/target
+/dist
+*.tmp
+
+# Android: compilati di Gradle e la libreria Rust copiata da compila.ps1.
+/android/progetto/.gradle
+/android/progetto/build
+/android/progetto/app/build
+/android/progetto/app/src/main/jniLibs
+/android/progetto/local.properties
+
+# Chiavi di firma e loro password: MAI nel repository (vedi android/LEGGIMI.md).
+*.jks
+*.keystore
+firma.properties
+
+# File di sistema ed editor.
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

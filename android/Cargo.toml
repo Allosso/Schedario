@@ -1,0 +1,21 @@
+[package]
+name = "schedario-android"
+version = "1.0.0"
+edition = "2024"
+description = "Schedario per Android: libreria caricata da GameActivity"
+license = "MIT"
+repository = "https://github.com/Allosso/schedario"
+publish = false
+
+# Su Android il programma e' una libreria caricata dalla classe Java
+# MainActivity (progetto/). Tutto il resto e' la libreria `schedario`.
+[lib]
+name = "schedario_android"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+schedario = { path = ".." }
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.22.4"

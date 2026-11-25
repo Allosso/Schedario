@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fondo dell'icona: il colore principale del programma. -->
+    <color name="fondo_icona">#2F6B7E</color>
+</resources>

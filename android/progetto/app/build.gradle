@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Versione: la stessa del programma per computer, letta da Cargo.toml, cosi'
+// c'e' un solo posto dove cambiarla. "1.2.3" diventa versionCode 10203: il
+// Play Store vuole un numero che cresce a ogni aggiornamento.
+def cargo = file('../../../Cargo.toml').text
+def versione = (cargo =~ /(?m)^version\s*=\s*"(\d+)\.(\d+)\.(\d+)"/)[0]
+def nomeVersione = "${versione[1]}.${versione[2]}.${versione[3]}"
+def codiceVersione = versione[1].toInteger() * 10000 + versione[2].toInteger() * 100 + versione[3].toInteger()
+
+// Versione da pubblicare (release): identificativo definitivo e firma.
+// - L'identificativo si imposta in gradle.properties (schedarioId), per
+//   esempio io.github.<utente>.schedario. Finche' manca, la versione da
+//   pubblicare non si compila; quella di sviluppo si', come sempre.
+// - La firma si legge da un file FUORI dal progetto, mai su GitHub:
+//   %USERPROFILE%\.schedario\firma.properties (oppure il percorso nella
+//   variabile d'ambiente SCHEDARIO_FIRMA), con le righe
+//     storeFile=C:/percorso/chiave.jks
+//     storePassword=...
+//     keyAlias=...
+//     keyPassword=...
+//   Senza quel file il pacchetto per il Play Store esce non firmato (utile
+//   solo per controllare che si compili: il Play Store lo rifiuta).
+def idPubblicazione = (findProperty('schedarioId') ?: '').toString().trim()
+def fileFirma = file(System.getenv('SCHEDARIO_FIRMA') ?: "${System.getProperty('user.home')}/.schedario/firma.properties")
+def firma = new Properties()
+if (fileFirma.exists()) {
+    fileFirma.withInputStream { firma.load(it) }
+}
+
+android {
+    // Pacchetto delle classi Java: resta fisso anche se cambia il nome dell'app.
+    namespace 'it.schedario.app'
+    compileSdk 36
+    // Strumenti gia' installati: evita che Gradle ne scarichi altri.
+    buildToolsVersion '36.1.0'
+    ndkVersion '28.2.13676358'
+
+    defaultConfig {
+        // Identificativo della versione di sviluppo: quella installata per
+        // le prove. La versione da pubblicare usa schedarioId (sotto).
+        applicationId 'it.schedario.sviluppo'
+        minSdk 26
+        // Android 16: obbligatorio per le app nuove sul Play Store dal 31
+        // agosto 2026.
+        targetSdk 36
+        versionCode codiceVersione
+        versionName nomeVersione
+    }
+
+    signingConfigs {
+        pubblicazione {
+            if (fileFirma.exists()) {
+                storeFile file(firma.getProperty('storeFile'))
+                storePassword firma.getProperty('storePassword')
+                keyAlias firma.getProperty('keyAlias')
+                keyPassword firma.getProperty('keyPassword')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            versionNameSuffix '-sviluppo'
+        }
+        release {
+            // Niente riduzione del codice Java: Rust chiama i metodi di
+            // MainActivity per nome, e la riduzione li toglierebbe.
+            minifyEnabled false
+            if (fileFirma.exists()) {
+                signingConfig signingConfigs.pubblicazione
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType('release')) { variante ->
+        if (idPubblicazione) {
+            variante.applicationId.set(idPubblicazione)
+        }
+    }
+}
+
+// Si ferma subito, con un messaggio chiaro, se si chiede la versione da
+// pubblicare senza l'identificativo definitivo.
+gradle.taskGraph.whenReady { grafo ->
+    def pubblicazione = grafo.allTasks.any { it.project == project && it.name.toLowerCase().contains('release') }
+    if (pubblicazione && !idPubblicazione) {
+        throw new GradleException("Manca l'identificativo definitivo: impostare schedarioId in android/progetto/gradle.properties (per esempio io.github.<utente>.schedario).")
+    }
+    if (pubblicazione && !fileFirma.exists()) {
+        logger.warn("ATTENZIONE: ${fileFirma} non esiste, la versione da pubblicare esce NON firmata.")
+    }
+}
+
+dependencies {
+    // GameActivity (Apache-2.0): la versione che android-activity 0.6.1 richiede.
+    implementation 'androidx.games:games-activity:4.4.0'
+    // Tema della finestra e tasto Indietro (Apache-2.0).
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    // Le librerie portano versioni diverse di Kotlin (Apache-2.0): le allinea.
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+}
