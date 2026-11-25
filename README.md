@@ -4,6 +4,9 @@
 > l'assistente di programmazione di Anthropic: l'autore ha deciso funzioni,
 > interfaccia e priorità e ha provato ogni versione; il codice e la
 > documentazione sono stati scritti da Claude Code.
+>
+> Schedario è un progetto personale e indipendente, senza alcun legame con
+> Anthropic.
 
 Note con schede per Windows, Linux, macOS e Android, sincronizzate e cifrate
 tra i dispositivi della stessa rete locale. Nessun account, nessun cloud,
@@ -14,7 +17,8 @@ ma non sono state provate.
 
 *English: a tabbed notes app for Windows, Linux, macOS and Android, with
 encrypted sync between devices on the same local network. No account, no
-cloud. Built with Claude Code. Tested on Windows and Android; the Linux and
+cloud. Built with Claude Code; an independent personal project, not
+affiliated with Anthropic. Tested on Windows and Android; the Linux and
 macOS versions build but have not been tested. Interface in Italian and
 English; documentation in Italian.*
 
