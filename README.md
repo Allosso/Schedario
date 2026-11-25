@@ -1,9 +1,9 @@
 # Schedario
 
-> **Realizzato in collaborazione con [Claude Code](https://claude.com/claude-code)**,
+> **Realizzato tramite [Claude Code](https://claude.com/claude-code)**,
 > l'assistente di programmazione di Anthropic: l'autore ha deciso funzioni,
-> interfaccia e priorità e ha provato ogni versione; Claude Code ha scritto il
-> codice e la documentazione.
+> interfaccia e priorità e ha provato ogni versione; il codice e la
+> documentazione sono stati scritti da Claude Code.
 
 Note con schede per Windows, Linux, macOS e Android, sincronizzate e cifrate
 tra i dispositivi della stessa rete locale. Nessun account, nessun cloud,
@@ -11,7 +11,7 @@ nessun abbonamento. Scritto in Rust con egui.
 
 *English: a tabbed notes app for Windows, Linux, macOS and Android, with
 encrypted sync between devices on the same local network. No account, no
-cloud. Built in collaboration with Claude Code. Interface in Italian and
+cloud. Built with Claude Code. Interface in Italian and
 English; documentation in Italian.*
 
 ## Cosa fa
