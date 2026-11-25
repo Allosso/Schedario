@@ -34,6 +34,11 @@ pub struct Applicazione {
     pub avvio_automatico: bool,
     /// Perche' la scorciatoia globale non funziona (per esempio su Wayland).
     pub errore_scorciatoia: Option<String>,
+    /// Quante volte le note sono state salvate da quando il programma e'
+    /// aperto: il backup automatico del telefono si rifa' quando cambia.
+    pub modifiche_salvate: u64,
+    /// Telefono: perche' l'ultimo backup automatico non e' riuscito.
+    pub errore_backup_automatico: Option<String>,
 
     pub(super) in_sospeso: BTreeSet<String>,
     pub(super) scadenza_salvataggio: Option<Instant>,
@@ -147,6 +152,9 @@ pub enum Avviso {
     Informazioni,
     /// Testi delle licenze (da Informazioni): Schedario e cio' che include.
     Licenze,
+    /// Telefono, alla prima apertura: le note stanno solo nell'app, conviene
+    /// attivare il backup automatico o la sincronizzazione.
+    InvitoBackup,
     /// Versioni precedenti di una nota (dalla piu' recente) e quella scelta.
     Cronologia { id: String, versioni: Vec<crate::archivio::storico::Versione>, scelta: usize },
     /// "Prendi l'ordine delle schede da…": il computer scelto, se c'e'.
@@ -172,6 +180,8 @@ impl Applicazione {
             uscita_confermata: false,
             avvio_automatico: crate::piattaforma::avvio_automatico::attivo(),
             errore_scorciatoia: None,
+            modifiche_salvate: 0,
+            errore_backup_automatico: None,
             in_sospeso: BTreeSet::new(),
             scadenza_salvataggio: None,
             modifiche_da_condividere: false,

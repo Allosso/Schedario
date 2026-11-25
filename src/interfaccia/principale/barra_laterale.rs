@@ -403,6 +403,52 @@ fn file(ui: &mut Ui, app: &mut Applicazione, t: &Tavolozza) {
         crate::piattaforma::android::apri_file();
     }
     nota_attenuata(ui, t, app.tr.t("solo_dispositivi"));
+    backup_automatico(ui, app, t);
+}
+
+/// Android: backup automatico in un file fuori dall'app (vedi
+/// `interfaccia::backup_automatico`). Spento: spiegazione e Attiva; acceso:
+/// file, ultimo aggiornamento, Cambia file e Disattiva.
+#[cfg(target_os = "android")]
+fn backup_automatico(ui: &mut Ui, app: &mut Applicazione, t: &Tavolozza) {
+    use crate::interfaccia::backup_automatico as backup;
+    ui.add_space(6.0);
+    componenti::etichetta(ui, app.tr.t("backup_automatico"));
+    let Some(attivo) = app.preferenze.backup_automatico.clone() else {
+        nota_attenuata(ui, t, app.tr.t("backup_automatico_spiegazione"));
+        if pulsante_largo(ui, t, app.tr.t("backup_automatico_attiva"))
+            .on_hover_text(app.tr.t("aiuto_backup_automatico_attiva"))
+            .clicked()
+        {
+            backup::attiva();
+        }
+        return;
+    };
+    ui.label(RichText::new(app.tr.f("backup_automatico_file", &[("nome", &attivo.nome)])).size(TESTO_VOCE));
+    let quando = match attivo.ultimo {
+        Some(ms) => app.tr.f(
+            "backup_automatico_ultimo",
+            &[("quando", &crate::piattaforma::ora_locale::data_ora(ms, app.tr.codice()))],
+        ),
+        None => app.tr.t("backup_automatico_mai").to_owned(),
+    };
+    nota_attenuata(ui, t, &quando);
+    if let Some(errore) = app.errore_backup_automatico.clone() {
+        componenti::errore(ui, t, &errore);
+    }
+    let scelta = componenti::scelte(
+        ui,
+        t,
+        &[
+            (app.tr.t("backup_automatico_cambia"), app.tr.t("aiuto_backup_automatico_cambia"), false),
+            (app.tr.t("backup_automatico_disattiva"), app.tr.t("aiuto_backup_automatico_disattiva"), false),
+        ],
+    );
+    match scelta {
+        Some(0) => backup::attiva(),
+        Some(1) => backup::disattiva(app),
+        _ => {}
+    }
 }
 
 /// Assistente AI (MCP): accesso, permesso di modificare, codice e comando

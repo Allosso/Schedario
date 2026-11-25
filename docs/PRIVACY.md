@@ -27,8 +27,16 @@ Android. Questa informativa descrive quali dati tratta e dove vanno.
 - **Impostazioni della rete locale**, compreso il codice di gruppo, nella
   cartella delle note.
 
-Disinstallando l'app su Android, note e preferenze vengono eliminate. Sul
-computer restano nella cartella scelta finché l'utente non le cancella.
+Disinstallando l'app su Android, note e preferenze vengono eliminate, a meno
+che l'utente non scelga di mantenere i dati dell'app nella finestra di
+disinstallazione di Android. Sul computer restano nella cartella scelta finché
+l'utente non le cancella.
+
+**Backup automatico (Android, facoltativo, spento all'inizio)**: se l'utente lo
+attiva, Schedario tiene una copia di tutte le note in un file scelto da lui
+(per esempio in Download o nella cartella di un servizio cloud) e la aggiorna
+dopo ogni modifica. Il file va solo dove l'utente sceglie; se è la cartella di
+un servizio cloud, vale l'informativa di quel servizio.
 
 ## Sincronizzazione in rete locale (facoltativa, spenta all'inizio)
 
@@ -110,8 +118,15 @@ Android. This policy describes which data it handles and where it goes.
   and a random device identifier (used by sync).
 - **Local network settings**, including the group code, in the notes folder.
 
-Uninstalling the app on Android deletes notes and preferences. On a computer
-they stay in the chosen folder until the user deletes them.
+Uninstalling the app on Android deletes notes and preferences, unless the user
+chooses to keep the app data in Android's uninstall dialog. On a computer they
+stay in the chosen folder until the user deletes them.
+
+**Automatic backup (Android, optional, off by default)**: when the user turns
+it on, Schedario keeps a copy of all notes in a file the user chooses (for
+example in Download or in a cloud service folder) and updates it after every
+change. The file goes only where the user chooses; if it is a cloud service
+folder, that service's privacy policy applies.
 
 ## Local network sync (optional, off by default)
 

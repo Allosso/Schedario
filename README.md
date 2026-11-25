@@ -32,7 +32,9 @@ English; documentation in Italian.*
   (Ctrl+Alt+N).
 - **Sincronizzazione in rete locale** tra computer e telefoni, cifrata con un
   codice di gruppo, senza server.
-- **Backup** in un file; ogni nota è anche un normale file `.txt`.
+- **Backup** in un file; sul telefono anche **automatico**, in un file scelto
+  che resta se si disinstalla l'app. Sul computer ogni nota è anche un
+  normale file `.txt`.
 - Tema chiaro o scuro, italiano e inglese.
 - Facoltativo, solo sul computer: accesso alle note per un **assistente AI**
   (per esempio Claude Code), dallo stesso computer e con un codice.

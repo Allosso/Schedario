@@ -309,5 +309,21 @@
   "menu_ripristina": "Ripristina",
   "menu_esporta": "Esporta come testo…",
   "menu_elimina_definitivamente": "Elimina definitivamente",
-  "aiuto_annulla_eliminazione": "Rimette nel cestino le note appena eliminate"
+  "aiuto_annulla_eliminazione": "Rimette nel cestino le note appena eliminate",
+  "backup_automatico": "Backup automatico",
+  "backup_automatico_spiegazione": "Le note stanno nella memoria dell’app e vengono cancellate se si disinstalla l’app. Il backup automatico ne tiene una copia aggiornata in un file scelto, per esempio in Download o in Google Drive: con «Importa backup» le note si ritrovano anche dopo una reinstallazione o su un altro telefono.",
+  "backup_automatico_attiva": "Attiva backup automatico…",
+  "aiuto_backup_automatico_attiva": "Sceglie il file in cui copiare le note; da quel momento il file si aggiorna da solo dopo ogni modifica",
+  "backup_automatico_file": "Copia aggiornata in «{nome}»",
+  "backup_automatico_ultimo": "Ultimo aggiornamento: {quando}",
+  "backup_automatico_mai": "Non ancora aggiornato",
+  "backup_automatico_cambia": "Cambia file…",
+  "aiuto_backup_automatico_cambia": "Sceglie un altro file per il backup automatico; quello attuale resta dov’è",
+  "backup_automatico_disattiva": "Disattiva",
+  "aiuto_backup_automatico_disattiva": "Smette di aggiornare il file; il file già salvato resta dov’è",
+  "backup_automatico_non_riuscito": "Backup automatico non riuscito: il file potrebbe essere stato spostato o cancellato. Scegliere di nuovo il file con «Cambia file…».",
+  "backup_automatico_attivato": "Backup automatico attivato: il file si aggiorna da solo dopo ogni modifica.",
+  "invito_backup_titolo": "Conservare una copia delle note",
+  "invito_backup_testo": "Le note sono salvate solo in questo telefono e vengono cancellate se si disinstalla l’app.\n\nPer conservarne una copia si può attivare il backup automatico in un file scelto, per esempio in Download o in Google Drive, oppure la sincronizzazione con un computer (Impostazioni → Rete locale). Entrambi si possono attivare anche più tardi, dalle Impostazioni.",
+  "piu_tardi": "Più tardi"
 }

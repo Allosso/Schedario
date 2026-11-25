@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -49,6 +51,7 @@ import java.util.Collections;
  * possono fare:
  * - appunti di Android (copia e incolla);
  * - finestre di Android per salvare e aprire file (backup);
+ * - backup automatico in un file scelto dall'utente, con permesso permanente;
  * - tasto Indietro e scorciatoia "Nuova nota" tenendo premuta l'icona;
  * - permesso di ricevere gli annunci UDP della rete locale (MulticastLock),
  *   senza il quale molti telefoni scartano i messaggi con cui i computer si
@@ -63,6 +66,8 @@ public class MainActivity extends GameActivity {
     private static final String AZIONE_NUOVA_NOTA = "it.schedario.app.NUOVA_NOTA";
     private static final int RICHIESTA_SALVA = 1;
     private static final int RICHIESTA_APRI = 2;
+    private static final int RICHIESTA_BACKUP = 3;
+    private static final int PERMESSO_FILE = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
     static {
         System.loadLibrary("schedario_android");
@@ -73,12 +78,15 @@ public class MainActivity extends GameActivity {
     static native void fileApertoNativo();
     static native void fileSalvatoNativo(boolean riuscito);
     static native void temaCambiatoNativo();
+    static native void backupAutomaticoSceltoNativo();
 
     private WifiManager.MulticastLock annunci;
     /** File gia' pronto da copiare dove l'utente sceglie. */
     private String daSalvare;
     /** Dove copiare il file scelto per l'importazione. */
     private String destinazioneApertura;
+    /** File appena scelto per il backup automatico ("indirizzo\nnome"), da leggere da Rust. */
+    private volatile String backupScelto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,10 +358,90 @@ public class MainActivity extends GameActivity {
         runOnUiThread(() -> startActivityForResult(intent, RICHIESTA_APRI));
     }
 
+    // --- Backup automatico ---
+    // Una copia di tutte le note in un file scelto dall'utente FUORI dall'app
+    // (Download, scheda SD, la cartella di un servizio cloud...): resta anche
+    // se l'app viene disinstallata. Il file si sceglie una volta sola; Android
+    // da' un permesso permanente per riscriverlo, che vale anche dopo un
+    // riavvio. Rust lo riscrive dopo ogni modifica (piattaforma/android).
+
+    /** Android chiede dove creare il file; l'esito arriva a backupAutomaticoSceltoNativo. */
+    public void scegliBackupAutomatico(String nome) {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("application/json")
+                .putExtra(Intent.EXTRA_TITLE, nome)
+                .addFlags(PERMESSO_FILE | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        runOnUiThread(() -> startActivityForResult(intent, RICHIESTA_BACKUP));
+    }
+
+    /** Il file appena scelto ("indirizzo\nnome mostrato"), oppure null; una volta sola. */
+    public String backupSceltoDaLeggere() {
+        String scelto = backupScelto;
+        backupScelto = null;
+        return scelto;
+    }
+
+    /** Copia il file preparato da Rust in quello scelto. false se non si puo' (permesso tolto, file cancellato...). */
+    public boolean scriviBackupAutomatico(String indirizzo, String percorso) {
+        Uri destinazione = Uri.parse(indirizzo);
+        // "wt" svuota il file prima di scrivere; qualche servizio conosce solo "w".
+        for (String modo : new String[] {"wt", "w"}) {
+            try (InputStream da = new FileInputStream(percorso);
+                 OutputStream a = getContentResolver().openOutputStream(destinazione, modo)) {
+                copia(da, a);
+                return true;
+            } catch (IllegalArgumentException | UnsupportedOperationException modoNonAccettato) {
+                Log.w(TAG, "modo " + modo + " non accettato", modoNonAccettato);
+            } catch (Exception errore) {
+                Log.w(TAG, "backup automatico non riuscito", errore);
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /** Backup automatico spento: il permesso sul file non serve piu'. Il file resta. */
+    public void rilasciaBackupAutomatico(String indirizzo) {
+        try {
+            getContentResolver().releasePersistableUriPermission(Uri.parse(indirizzo), PERMESSO_FILE);
+        } catch (Exception errore) {
+            Log.w(TAG, "permesso non rilasciato", errore);
+        }
+    }
+
+    /** Nome del file come lo mostra Android, per esempio "Schedario-backup-automatico.json". */
+    private String nomeDi(Uri indirizzo) {
+        try (Cursor riga = getContentResolver().query(indirizzo, new String[] {OpenableColumns.DISPLAY_NAME}, null, null, null)) {
+            if (riga != null && riga.moveToFirst()) {
+                String nome = riga.getString(0);
+                if (nome != null) {
+                    return nome;
+                }
+            }
+        } catch (Exception errore) {
+            Log.w(TAG, "nome del file non letto", errore);
+        }
+        String ultimo = indirizzo.getLastPathSegment();
+        return ultimo == null ? "" : ultimo;
+    }
+
     @Override
     protected void onActivityResult(int richiesta, int esito, Intent dati) {
         super.onActivityResult(richiesta, esito, dati);
         Uri indirizzo = (esito == RESULT_OK && dati != null) ? dati.getData() : null;
+        if (richiesta == RICHIESTA_BACKUP) {
+            if (indirizzo != null) {
+                try {
+                    getContentResolver().takePersistableUriPermission(indirizzo, PERMESSO_FILE);
+                } catch (SecurityException errore) {
+                    Log.w(TAG, "permesso permanente non concesso", errore);
+                }
+                backupScelto = indirizzo + "\n" + nomeDi(indirizzo);
+                backupAutomaticoSceltoNativo();
+            }
+            return;
+        }
         if (richiesta == RICHIESTA_SALVA) {
             boolean riuscito = false;
             if (indirizzo != null && daSalvare != null) {

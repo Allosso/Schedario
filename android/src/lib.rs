@@ -42,3 +42,8 @@ pub extern "system" fn Java_it_schedario_app_MainActivity_fileSalvatoNativo(
 pub extern "system" fn Java_it_schedario_app_MainActivity_temaCambiatoNativo(_env: *mut JNIEnv, _classe: jclass) {
     android::notifica(Evento::TemaCambiato);
 }
+
+#[unsafe(no_mangle)]
+pub extern "system" fn Java_it_schedario_app_MainActivity_backupAutomaticoSceltoNativo(_env: *mut JNIEnv, _classe: jclass) {
+    android::notifica(Evento::BackupAutomaticoScelto);
+}

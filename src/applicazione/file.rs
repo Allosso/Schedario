@@ -18,16 +18,24 @@ impl Applicazione {
     }
 
     pub fn esporta_backup(&mut self, percorso: &Path) {
-        let Some(cartella) = &self.cartella else { return };
+        if self.cartella.is_none() {
+            return;
+        }
         if self.percorso_protetto(percorso) {
             self.avviso = Some(Avviso::Errore(self.tr.t("percorso_protetto").to_owned()));
             return;
         }
-        let note = cartella.note.values().collect();
-        self.avviso = Some(match backup::esporta(percorso, note) {
+        self.avviso = Some(match self.scrivi_backup(percorso) {
             Ok(()) => Avviso::Info(self.tr.t("backup_fatto").to_owned()),
             Err(errore) => Avviso::Errore(errore),
         });
+    }
+
+    /// Scrive il backup di tutte le note in `percorso`, senza messaggi (lo usa
+    /// anche il backup automatico del telefono).
+    pub fn scrivi_backup(&self, percorso: &Path) -> Result<(), String> {
+        let Some(cartella) = &self.cartella else { return Err(self.tr.t("errore").to_owned()) };
+        backup::esporta(percorso, cartella.note.values().collect())
     }
 
     pub fn importa_backup(&mut self, percorso: &Path) {

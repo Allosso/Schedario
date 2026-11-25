@@ -41,6 +41,9 @@ pub struct Programma {
     /// Collegamento con la tastiera del telefono.
     #[cfg(target_os = "android")]
     ponte: crate::piattaforma::android::tastiera::Ponte,
+    /// Quando riscrivere il file del backup automatico.
+    #[cfg(target_os = "android")]
+    backup: super::backup_automatico::Pianificazione,
     /// Spazio coperto in basso nell'ultimo fotogramma (tastiera o barra), in pixel.
     #[cfg(target_os = "android")]
     basso_prima: i32,
@@ -197,6 +200,8 @@ impl Programma {
             #[cfg(target_os = "android")]
             ponte: Default::default(),
             #[cfg(target_os = "android")]
+            backup: Default::default(),
+            #[cfg(target_os = "android")]
             basso_prima: 0,
             #[cfg(target_os = "android")]
             premuto_da: None,
@@ -313,8 +318,27 @@ impl Programma {
                 Evento::FileSalvato(true) => self.app.avviso = Some(Avviso::Info(self.app.tr.t("file_salvato").to_owned())),
                 Evento::FileSalvato(false) => {}
                 Evento::TemaCambiato => self.app.interfaccia.tema_sistema = android::tema_scuro_di_sistema(),
+                Evento::BackupAutomaticoScelto => self.backup.scelto(&mut self.app),
             }
         }
+        self.backup.aggiorna(&mut self.app, ctx);
+        self.invito_backup();
+    }
+
+    /// Alla prima apertura: le note stanno solo nell'app, e disinstallandola
+    /// si perderebbero. Si invita (una volta sola) ad attivare il backup
+    /// automatico o la sincronizzazione; se una delle due e' gia' attiva, no.
+    #[cfg(target_os = "android")]
+    fn invito_backup(&mut self) {
+        use crate::applicazione::Avviso;
+        if self.app.preferenze.invito_backup_visto || self.app.cartella.is_none() || self.app.avviso.is_some() {
+            return;
+        }
+        self.app.preferenze.invito_backup_visto = true;
+        if self.app.preferenze.backup_automatico.is_none() && !self.app.rete.impostazioni.attiva {
+            self.app.avviso = Some(Avviso::InvitoBackup);
+        }
+        self.app.salva_preferenze();
     }
 
     /// Indietro chiude la cosa aperta piu' in alto; se non c'e' nulla da
@@ -417,6 +441,8 @@ impl Programma {
             // Android potrebbe chiudere l'app prima della fine.
             self.app.conferma_eliminazione();
             self.app.salva_ora();
+            // Anche il backup automatico, se ci sono modifiche non ancora copiate.
+            self.backup.subito_se_serve(&mut self.app);
             self.app.salva_sessione();
             self.app.salva_preferenze();
         }

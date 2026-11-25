@@ -9,6 +9,11 @@
     <!-- Vibrazione breve sulla pressione lunga (concesso all'installazione). -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- allowBackup="false": nessuna copia delle note sul cloud di Google.
+         hasFragileUserData="true": disinstallando l'app, Android chiede se
+         tenerne i dati (note comprese) per ritrovarli reinstallandola.
+         Per una copia fuori dall'app c'e' il backup automatico in un file
+         scelto dall'utente (MainActivity.scegliBackupAutomatico). -->
     <application
         android:label="@string/app_name"
         android:icon="@mipmap/icona"
@@ -16,6 +21,7 @@
         android:enableOnBackInvokedCallback="true"
         android:hasCode="true"
         android:allowBackup="false"
+        android:hasFragileUserData="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
         <!-- singleTask: "Nuova nota" dall'icona torna all'app gia' aperta.

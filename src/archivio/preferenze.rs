@@ -47,9 +47,26 @@ pub struct Preferenze {
     /// Codice di accesso richiesto dal server MCP (`Authorization: Bearer …`).
     pub mcp_codice: String,
     pub mcp_porta: u16,
+    /// Telefono: backup automatico in un file scelto dall'utente, fuori
+    /// dall'app (resta anche disinstallandola). `None`: spento.
+    pub backup_automatico: Option<BackupAutomatico>,
+    /// Telefono: l'invito a proteggere le note e' gia' stato mostrato?
+    pub invito_backup_visto: bool,
 
     #[serde(skip)]
     percorso: PathBuf,
+}
+
+/// Il file del backup automatico sul telefono.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct BackupAutomatico {
+    /// Indirizzo del file per Android (`content://…`), con permesso permanente.
+    pub indirizzo: String,
+    /// Nome del file da mostrare, per esempio "Schedario-backup-automatico.json".
+    pub nome: String,
+    /// Ultimo aggiornamento riuscito, in millisecondi dal 1970.
+    pub ultimo: Option<i64>,
 }
 
 /// Una combinazione di tasti: modificatori piu' un tasto. `tasto` e' il nome
@@ -109,6 +126,8 @@ impl Default for Preferenze {
             mcp_modifiche: false,
             mcp_codice: String::new(),
             mcp_porta: crate::mcp::PORTA_PREDEFINITA,
+            backup_automatico: None,
+            invito_backup_visto: false,
             percorso: PathBuf::new(),
         }
     }

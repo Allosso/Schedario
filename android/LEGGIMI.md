@@ -47,6 +47,16 @@ Funziona da Android 8.0 in su (API 26), su telefoni a 64 bit (arm64-v8a).
 Le note stanno nella cartella privata dell'app
 (`/data/user/0/it.schedario.sviluppo/files/Note`), le preferenze in `files/Dati`.
 `files/Scambio` contiene i file temporanei dei backup in uscita e in entrata.
+Android cancella questa cartella disinstallando l'app, per questo:
+
+- il manifest ha `hasFragileUserData="true"`: disinstallando, Android chiede se
+  mantenere i dati;
+- c'è il **backup automatico** (`src/interfaccia/backup_automatico.rs`): un file
+  scelto dall'utente fuori dall'app (`MainActivity.scegliBackupAutomatico`,
+  permesso permanente con `takePersistableUriPermission`), riscritto 20 s dopo
+  ogni salvataggio delle note e passando a un'altra app;
+- alla prima apertura un invito (`Avviso::InvitoBackup`) propone di attivarlo,
+  se non è già attivo il backup o la sincronizzazione.
 
 ## Compilare
 

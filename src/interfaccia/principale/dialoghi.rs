@@ -60,6 +60,10 @@ pub fn mostra(ctx: &egui::Context, app: &mut Applicazione, t: &Tavolozza) {
                 componenti::titolo_dialogo(ui, app.tr.t("svuota_cestino"), t.pericolo);
                 ui.label(app.tr.f("conferma_svuota", &[("n", &quante.to_string())]));
             }
+            Avviso::InvitoBackup => {
+                componenti::titolo_dialogo(ui, app.tr.t("invito_backup_titolo"), t.testo);
+                ui.label(app.tr.t("invito_backup_testo"));
+            }
             Avviso::Cronologia { .. } | Avviso::PrendiOrdine { .. } | Avviso::Licenze => {}
             Avviso::Informazioni => {
                 ui.horizontal(|ui| {
@@ -88,6 +92,17 @@ pub fn mostra(ctx: &egui::Context, app: &mut Applicazione, t: &Tavolozza) {
                     conferma = true;
                 }
                 if pulsante_accento(ui, t, app.tr.t("annulla")).clicked() {
+                    chiudi = true;
+                }
+            }
+            Avviso::InvitoBackup => {
+                if pulsante_accento(ui, t, app.tr.t("backup_automatico_attiva"))
+                    .on_hover_text(app.tr.t("aiuto_backup_automatico_attiva"))
+                    .clicked()
+                {
+                    conferma = true;
+                }
+                if pulsante(ui, t, app.tr.t("piu_tardi")).clicked() {
                     chiudi = true;
                 }
             }
@@ -121,6 +136,8 @@ pub fn mostra(ctx: &egui::Context, app: &mut Applicazione, t: &Tavolozza) {
                 app.elimina_con_annulla(tutte);
             }
             Avviso::ConfermaSvuotaCestino => app.svuota_cestino(),
+            #[cfg(target_os = "android")]
+            Avviso::InvitoBackup => crate::interfaccia::backup_automatico::attiva(),
             _ => {}
         }
         return;

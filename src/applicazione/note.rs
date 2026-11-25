@@ -407,6 +407,7 @@ impl Applicazione {
         match cartella.salva(&id) {
             Ok(()) => {
                 self.in_sospeso.clear();
+                self.modifiche_salvate += 1;
                 self.salvataggio = StatoSalvataggio::Salvato;
                 self.condividi_modifiche();
                 true

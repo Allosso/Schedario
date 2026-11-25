@@ -397,6 +397,18 @@ Altre differenze rispetto al computer:
   di Android per scegliere dove salvare (per esempio Download o Drive);
   **Importa backup** e **Esporta come testo…** (tenendo premuta la scheda
   nella panoramica) funzionano allo stesso modo;
+- disinstallando l'app quella memoria viene cancellata. Per non perdere le
+  note: il **backup automatico** (Impostazioni → Cartella e backup → **Attiva
+  backup automatico…**) fa scegliere una volta un file, per esempio
+  `Schedario-backup-automatico.json` in Download o in Google Drive, e da lì in
+  poi lo riscrive da solo una ventina di secondi dopo ogni modifica e
+  passando a un'altra app. Dopo una reinstallazione, o su un altro telefono,
+  con **Importa backup** su quel file le note tornano. "Cambia file…" ne
+  sceglie un altro, "Disattiva" smette di aggiornarlo (il file resta). In più,
+  disinstallando, Android chiede se **mantenere i dati** dell'app: con la
+  casella spuntata, reinstallando le note sono ancora lì. Alla prima
+  apertura un invito ricorda di attivare il backup automatico o la
+  sincronizzazione;
 - la tastiera del telefono funziona in tutti i campi: accenti tenendo
   premuto, suggerimenti e correzioni, maiuscola a inizio frase. Invio su una
   voce di lista ne crea un'altra, come sul computer;

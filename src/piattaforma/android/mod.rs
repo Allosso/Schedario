@@ -40,6 +40,8 @@ pub enum Evento {
     FileSalvato(bool),
     /// Il telefono e' passato dal tema chiaro a quello scuro, o viceversa.
     TemaCambiato,
+    /// Scelto il file del backup automatico: lo dice `backup_automatico_scelto`.
+    BackupAutomaticoScelto,
 }
 
 /// Punto di ingresso, chiamato da `android_main` (android/src/lib.rs).
@@ -240,6 +242,55 @@ pub fn apri_file() {
     con_java(|env, attivita| {
         let destinazione = JString::new(env, &destinazione)?;
         env.call_method(attivita, jni_str!("apriFile"), jni_sig!("(Ljava/lang/String;)V"), &[JValue::Object(&destinazione)])?;
+        Ok(())
+    });
+}
+
+/// Backup automatico: Android chiede dove creare il file (proponendo `nome`);
+/// la scelta arriva come `Evento::BackupAutomaticoScelto`.
+pub fn scegli_backup_automatico(nome: &str) {
+    con_java(|env, attivita| {
+        let nome = JString::new(env, nome)?;
+        env.call_method(attivita, jni_str!("scegliBackupAutomatico"), jni_sig!("(Ljava/lang/String;)V"), &[JValue::Object(&nome)])?;
+        Ok(())
+    });
+}
+
+/// Il file appena scelto per il backup automatico: indirizzo (per Android) e
+/// nome da mostrare. Si legge una volta sola.
+pub fn backup_automatico_scelto() -> Option<(String, String)> {
+    let testo = con_java(|env, attivita| {
+        let oggetto = env.call_method(attivita, jni_str!("backupSceltoDaLeggere"), jni_sig!("()Ljava/lang/String;"), &[])?.l()?;
+        stringa_java(env, oggetto)
+    })
+    .flatten()?;
+    let (indirizzo, nome) = testo.split_once('\n').unwrap_or((testo.as_str(), ""));
+    Some((indirizzo.to_owned(), nome.to_owned()))
+}
+
+/// Copia il file `percorso` in quello del backup automatico. `false` se non
+/// si puo' (per esempio il file e' stato cancellato o il permesso tolto).
+pub fn scrivi_backup_automatico(indirizzo: &str, percorso: &std::path::Path) -> bool {
+    let percorso = percorso.display().to_string();
+    con_java(|env, attivita| {
+        let indirizzo = JString::new(env, indirizzo)?;
+        let percorso = JString::new(env, &percorso)?;
+        env.call_method(
+            attivita,
+            jni_str!("scriviBackupAutomatico"),
+            jni_sig!("(Ljava/lang/String;Ljava/lang/String;)Z"),
+            &[JValue::Object(&indirizzo), JValue::Object(&percorso)],
+        )?
+        .z()
+    })
+    .unwrap_or(false)
+}
+
+/// Backup automatico spento: Android dimentica il permesso sul file (il file resta).
+pub fn rilascia_backup_automatico(indirizzo: &str) {
+    con_java(|env, attivita| {
+        let indirizzo = JString::new(env, indirizzo)?;
+        env.call_method(attivita, jni_str!("rilasciaBackupAutomatico"), jni_sig!("(Ljava/lang/String;)V"), &[JValue::Object(&indirizzo)])?;
         Ok(())
     });
 }

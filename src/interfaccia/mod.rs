@@ -19,6 +19,8 @@
 
 pub mod area_notifica;
 pub mod avvio;
+#[cfg(target_os = "android")]
+pub mod backup_automatico;
 pub mod componenti;
 pub mod icona;
 pub mod icona_forme;

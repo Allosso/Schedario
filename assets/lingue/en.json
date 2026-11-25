@@ -309,5 +309,21 @@
   "menu_ripristina": "Restore",
   "menu_esporta": "Export as text…",
   "menu_elimina_definitivamente": "Delete permanently",
-  "aiuto_annulla_eliminazione": "Puts the notes just deleted back in the trash"
+  "aiuto_annulla_eliminazione": "Puts the notes just deleted back in the trash",
+  "backup_automatico": "Automatic backup",
+  "backup_automatico_spiegazione": "Notes are kept in the app’s storage and are deleted if the app is uninstalled. The automatic backup keeps an up-to-date copy in a chosen file, for example in Download or Google Drive: with “Import backup” the notes come back even after reinstalling or on another phone.",
+  "backup_automatico_attiva": "Turn on automatic backup…",
+  "aiuto_backup_automatico_attiva": "Chooses the file to copy the notes to; from then on the file updates itself after every change",
+  "backup_automatico_file": "Up-to-date copy in “{nome}”",
+  "backup_automatico_ultimo": "Last updated: {quando}",
+  "backup_automatico_mai": "Not updated yet",
+  "backup_automatico_cambia": "Change file…",
+  "aiuto_backup_automatico_cambia": "Chooses another file for the automatic backup; the current one stays where it is",
+  "backup_automatico_disattiva": "Turn off",
+  "aiuto_backup_automatico_disattiva": "Stops updating the file; the file already saved stays where it is",
+  "backup_automatico_non_riuscito": "Automatic backup failed: the file may have been moved or deleted. Choose the file again with “Change file…”.",
+  "backup_automatico_attivato": "Automatic backup turned on: the file updates itself after every change.",
+  "invito_backup_titolo": "Keep a copy of the notes",
+  "invito_backup_testo": "Notes are saved only on this phone and are deleted if the app is uninstalled.\n\nTo keep a copy, turn on the automatic backup to a chosen file, for example in Download or Google Drive, or sync with a computer (Settings → Local network). Both can also be turned on later, from Settings.",
+  "piu_tardi": "Later"
 }
