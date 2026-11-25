@@ -14,7 +14,7 @@ documentation is in Italian. Privacy policy: [docs/PRIVACY.md](docs/PRIVACY.md).
 ## Scaricare
 
 Le versioni pronte sono nella pagina
-[**Releases**](https://github.com/Allosso/schedario/releases) del repository:
+[**Releases**](https://github.com/Allosso/Schedario/releases) del repository:
 `Schedario-<versione>-windows-x64.zip`, `…-linux-x64.tar.gz`,
 `…-macos-arm64.zip` e l'APK per Android. Non serve installare nulla: si
 estrae l'archivio e si avvia il programma.

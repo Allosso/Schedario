@@ -79,7 +79,7 @@ Schedario non raccoglie dati di nessuno, quindi neanche di minori.
 
 Le modifiche a questa informativa compaiono in questo file, nel repository del
 progetto su GitHub, con la data di entrata in vigore. Per domande: la sezione
-"Issues" del repository, https://github.com/Allosso/schedario/issues.
+"Issues" del repository, https://github.com/Allosso/Schedario/issues.
 
 ---
 
@@ -163,4 +163,4 @@ Schedario collects no one's data, so no children's data either.
 
 Changes to this policy appear in this file, in the project's GitHub
 repository, with the effective date. For questions: the repository's "Issues"
-section, https://github.com/Allosso/schedario/issues.
+section, https://github.com/Allosso/Schedario/issues.

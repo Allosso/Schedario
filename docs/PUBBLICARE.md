@@ -39,7 +39,7 @@ account, la chiave di firma e le scelte che spettano all'autore (segnate con ☐
 1. ☑ Account GitHub: **Allosso**.
 2. ☑ Identificativo dell'app `io.github.allosso.schedario` in
    `android/progetto/gradle.properties`; `repository` in `Cargo.toml`.
-3. ☐ Nuovo repository pubblico `schedario` (https://github.com/Allosso/schedario),
+3. ☑ Repository pubblico `Schedario` (https://github.com/Allosso/Schedario),
    **senza** README, licenza o .gitignore (ci sono già).
 4. ☐ Invio dei file. Git è installato; il repository locale esiste, con nome e
    email privata di GitHub già impostati solo per questo progetto
@@ -47,7 +47,7 @@ account, la chiave di firma e le scelte che spettano all'autore (segnate con ☐
    personale non finisce nella cronologia. Dalla cartella `Note`:
 
    ```powershell
-   git remote add origin https://github.com/Allosso/schedario.git
+   git remote add origin https://github.com/Allosso/Schedario.git
    git push -u origin main
    ```
 
@@ -127,7 +127,7 @@ Play Console prima di pubblicare).
 | Sicurezza dei dati: l'app raccoglie o condivide dati? | **No** | Nessun dato arriva allo sviluppatore o a terzi. La sincronizzazione è avviata dall'utente, va solo ai suoi dispositivi in rete locale ed è cifrata da un capo all'altro. *Da confermare con la guida di Google al momento della compilazione.* |
 | Dati cifrati durante il trasferimento | Sì | ChaCha20-Poly1305. |
 | Richiesta di eliminazione dei dati | Non applicabile | Nessun dato conservato dallo sviluppatore; disinstallando l'app si cancella tutto. |
-| Informativa sulla privacy (URL) | `https://github.com/Allosso/schedario/blob/main/docs/PRIVACY.md` | |
+| Informativa sulla privacy (URL) | `https://github.com/Allosso/Schedario/blob/main/docs/PRIVACY.md` | |
 | Accesso all'app | Nessuna restrizione, nessun accesso richiesto | Non ci sono account. |
 | Annunci pubblicitari | No | |
 | Pubblico di destinazione | 13 anni e oltre | Sotto i 13 anni si applicano i requisiti del programma "Famiglie". |

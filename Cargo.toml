@@ -4,7 +4,7 @@ version = "1.0.0"
 edition = "2024"
 description = "Note desktop con schede, widget fluttuanti e sincronizzazione in rete locale"
 license = "MIT"
-repository = "https://github.com/Allosso/schedario"
+repository = "https://github.com/Allosso/Schedario"
 publish = false
 
 # Il programma e' diviso in una libreria (tutta la logica, testabile)

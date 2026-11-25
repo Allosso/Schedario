@@ -4,7 +4,7 @@ version = "1.0.0"
 edition = "2024"
 description = "Schedario per Android: libreria caricata da GameActivity"
 license = "MIT"
-repository = "https://github.com/Allosso/schedario"
+repository = "https://github.com/Allosso/Schedario"
 publish = false
 
 # Su Android il programma e' una libreria caricata dalla classe Java
